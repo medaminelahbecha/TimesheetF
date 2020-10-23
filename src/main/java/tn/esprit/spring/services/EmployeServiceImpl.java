@@ -18,9 +18,13 @@ import tn.esprit.spring.repository.ContratRepository;
 import tn.esprit.spring.repository.DepartementRepository;
 import tn.esprit.spring.repository.EmployeRepository;
 import tn.esprit.spring.repository.TimesheetRepository;
+import org.apache.log4j.Logger;
+
 
 @Service
 public class EmployeServiceImpl implements IEmployeService {
+	private static final Logger logger = Logger.getLogger(EmployeServiceImpl.class);
+
 
 	@Autowired
 	EmployeRepository employeRepository;
@@ -33,17 +37,22 @@ public class EmployeServiceImpl implements IEmployeService {
 
 	@Override
 	public Employe authenticate(String login, String password) {
+		logger.info("Authentification");
 		return employeRepository.getEmployeByEmailAndPassword(login, password);
 	}
 
 	@Override
 	public int addOrUpdateEmploye(Employe employe) {
+		logger.info("add or update employes");
 		employeRepository.save(employe);
+		logger.info("operation termine avec succe");
 		return employe.getId();
+		
 	}
 
 	@Override
 	public Employe mettreAjourEmailByEmployeId(String email, int employeId) {
+		logger.info("update EmailEmploye by employeID");
 		Employe employe = employeRepository.findById(employeId).get();
 		employe.setEmail(email);
 		employeRepository.save(employe);
@@ -52,6 +61,7 @@ public class EmployeServiceImpl implements IEmployeService {
 
 	@Transactional
 	public void affecterEmployeADepartement(int employeId, int depId) {
+		logger.info("Affecter employer a un departement");
 		Departement depManagedEntity = deptRepoistory.findById(depId).get();
 		Employe employeManagedEntity = employeRepository.findById(employeId).get();
 
@@ -72,6 +82,7 @@ public class EmployeServiceImpl implements IEmployeService {
 
 	@Transactional
 	public void desaffecterEmployeDuDepartement(int employeId, int depId) {
+		logger.info("DesAffecter un employer du departement");
 		Departement dep = deptRepoistory.findById(depId).get();
 
 		int employeNb = dep.getEmployes().size();
@@ -86,11 +97,13 @@ public class EmployeServiceImpl implements IEmployeService {
 	// Tablesapce (espace disque)
 
 	public int ajouterContrat(Contrat contrat) {
+		logger.info("Ajouter Un contrat");
 		contratRepoistory.save(contrat);
 		return contrat.getReference();
 	}
 
 	public void affecterContratAEmploye(int contratId, int employeId) {
+		logger.info("Affecter contrat a un employer");
 		Contrat contratManagedEntity = contratRepoistory.findById(contratId).get();
 		Employe employeManagedEntity = employeRepository.findById(employeId).get();
 
@@ -100,6 +113,7 @@ public class EmployeServiceImpl implements IEmployeService {
 	}
 
 	public String getEmployePrenomById(int employeId) {
+		logger.info("Get le prenom de l'employe Par l id ");
 		Employe employeManagedEntity = employeRepository.findById(employeId).get();
 		return employeManagedEntity.getPrenom();
 	}
@@ -159,6 +173,7 @@ public class EmployeServiceImpl implements IEmployeService {
 	}
 
 	public List<Employe> getAllEmployes() {
+		logger.info("ateeeeeeeeeeeeefffffffffffffff");
 		return (List<Employe>) employeRepository.findAll();
 	}
 
