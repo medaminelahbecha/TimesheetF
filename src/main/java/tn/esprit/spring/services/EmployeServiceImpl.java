@@ -39,6 +39,7 @@ public class EmployeServiceImpl implements IEmployeService {
 	public Employe authenticate(String login, String password) {
 		logger.info("Authentification");
 		return employeRepository.getEmployeByEmailAndPassword(login, password);
+		
 	}
 
 	@Override
@@ -56,6 +57,7 @@ public class EmployeServiceImpl implements IEmployeService {
 		Employe employe = employeRepository.findById(employeId).get();
 		employe.setEmail(email);
 		employeRepository.save(employe);
+		logger.info("update avec succé");
 		return employe;
 	}
 
@@ -74,9 +76,11 @@ public class EmployeServiceImpl implements IEmployeService {
 
 			depManagedEntity.getEmployes().add(employeManagedEntity);
 		}
+		logger.info("Au cour de l'affecctation");
 
 		// à ajouter?
 		deptRepoistory.save(depManagedEntity);
+		logger.info("Affectation terminé");
 
 	}
 
@@ -92,6 +96,7 @@ public class EmployeServiceImpl implements IEmployeService {
 				break;// a revoir
 			}
 		}
+		logger.info("Desaffectation terminé");
 	}
 
 	// Tablesapce (espace disque)
@@ -99,6 +104,7 @@ public class EmployeServiceImpl implements IEmployeService {
 	public int ajouterContrat(Contrat contrat) {
 		logger.info("Ajouter Un contrat");
 		contratRepoistory.save(contrat);
+		logger.info("contrat ajouter");
 		return contrat.getReference();
 	}
 
@@ -109,16 +115,19 @@ public class EmployeServiceImpl implements IEmployeService {
 
 		contratManagedEntity.setEmploye(employeManagedEntity);
 		contratRepoistory.save(contratManagedEntity);
+		logger.info("l'employer "+employeManagedEntity.getNom() +"a un contrat");
 
 	}
 
 	public String getEmployePrenomById(int employeId) {
 		logger.info("Get le prenom de l'employe Par l id ");
 		Employe employeManagedEntity = employeRepository.findById(employeId).get();
+		logger.info("voici l'employe "+employeManagedEntity.getNom() );
 		return employeManagedEntity.getPrenom();
 	}
 
 	public void deleteEmployeById(int employeId) {
+		logger.info("effacer un employer");
 		Employe employe = employeRepository.findById(employeId).get();
 
 		// Desaffecter l'employe de tous les departements
@@ -129,51 +138,62 @@ public class EmployeServiceImpl implements IEmployeService {
 		}
 
 		employeRepository.delete(employe);
+		logger.info("employe " +employe.getNom() +" effacer avec succé");
 	}
 
 	public void deleteContratById(int contratId) {
+		logger.info("effacer un contrat");
 		Contrat contratManagedEntity = contratRepoistory.findById(contratId).get();
 		contratRepoistory.delete(contratManagedEntity);
+		logger.info("contrat "+ contratManagedEntity.getReference() +" effacer");
 
 	}
 
 	public int getNombreEmployeJPQL() {
+		logger.info("afficher le nombre des employes");
 		return employeRepository.countemp();
 	}
 
 	public List<String> getAllEmployeNamesJPQL() {
+		logger.info("afficher les noms des employes");
 		return employeRepository.employeNames();
 
 	}
 
 	public List<Employe> getAllEmployeByEntreprise(Entreprise entreprise) {
+		logger.info("afficher les employe par entreprise");
 		return employeRepository.getAllEmployeByEntreprisec(entreprise);
 	}
 
 	public void mettreAjourEmailByEmployeIdJPQL(String email, int employeId) {
+		logger.info("mise a jour de l'email d'un employe");
 		employeRepository.mettreAjourEmailByEmployeIdJPQL(email, employeId);
 
 	}
 
 	public void deleteAllContratJPQL() {
+		logger.info("effacer un contrat");
 		employeRepository.deleteAllContratJPQL();
 	}
 
 	public float getSalaireByEmployeIdJPQL(int employeId) {
+		logger.info("afficher le salaire d'un employe");
 		return employeRepository.getSalaireByEmployeIdJPQL(employeId);
 	}
 
 	public Double getSalaireMoyenByDepartementId(int departementId) {
+		logger.info("afficher le salaire d'un employe dans un departement");
 		return employeRepository.getSalaireMoyenByDepartementId(departementId);
 	}
 
 	public List<Timesheet> getTimesheetsByMissionAndDate(Employe employe, Mission mission, Date dateDebut,
 			Date dateFin) {
+		logger.info("afficher timeSheets par mission et date ");
 		return timesheetRepository.getTimesheetsByMissionAndDate(employe, mission, dateDebut, dateFin);
 	}
 
 	public List<Employe> getAllEmployes() {
-		logger.info("ateeeeeeeeeeeeefffffffffffffff");
+		logger.info("T");
 		return (List<Employe>) employeRepository.findAll();
 	}
 
