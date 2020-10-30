@@ -20,13 +20,13 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 
 
 	@Autowired
-    EntrepriseRepository entrepriseRepoistory;
+	EntrepriseRepository entrepriseRepoistory;
 	@Autowired
 	DepartementRepository deptRepoistory;
 	//cv
 	public Entreprise ajouterEntreprise(Entreprise entreprise) {
-		
-		
+
+
 		l.info("In addEntrprise : " + entreprise); 
 
 		Entreprise e =entrepriseRepoistory.save(entreprise);
@@ -34,7 +34,7 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 
 		return e;
 	}
-//cv
+	//cv
 	public Departement ajouterDepartement(Departement dep) {
 		l.info("In  addDepartement : " + dep); 
 
@@ -43,30 +43,30 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 
 		return deprt;
 	}
-	
+
 	public void affecterDepartementAEntreprise(int depId, int entrepriseId) {
 		l.info("In  affecterDepartementAEntreprise : departementId, entrepriseId"+ depId  + entrepriseId); 
 
 		//Le bout Master de cette relation N:1 est departement  
-				//donc il faut rajouter l'entreprise a departement 
-				// ==> c'est l'objet departement(le master) qui va mettre a jour l'association
-				//Rappel : la classe qui contient mappedBy represente le bout Slave
-				//Rappel : Dans une relation oneToMany le mappedBy doit etre du cote one.
-				Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).get();
-				l.info(" entrepriseId" + entrepriseId); 
+		//donc il faut rajouter l'entreprise a departement 
+		// ==> c'est l'objet departement(le master) qui va mettre a jour l'association
+		//Rappel : la classe qui contient mappedBy represente le bout Slave
+		//Rappel : Dans une relation oneToMany le mappedBy doit etre du cote one.
+		Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).get();
+		l.info(" entrepriseId" + entrepriseId); 
 
-				Departement depManagedEntity = deptRepoistory.findById(depId).get();
-				l.info(" departementId "+ depId  ); 
+		Departement depManagedEntity = deptRepoistory.findById(depId).get();
+		l.info(" departementId "+ depId  ); 
 
-				depManagedEntity.setEntreprise(entrepriseManagedEntity);
-				deptRepoistory.save(depManagedEntity);
-				l.info("departement  affecté"); 
+		depManagedEntity.setEntreprise(entrepriseManagedEntity);
+		deptRepoistory.save(depManagedEntity);
+		l.info("departement  affecté"); 
 
-				l.info("Out of affecterDepartementAEntreprise. " ); 
+		l.info("Out of affecterDepartementAEntreprise. " ); 
 
-		
+
 	}
-	
+
 	public List<Entreprise> retrieveAllEntreprises() {
 		l.info("In  retrieveAllEntreprises : "); 
 		List<Entreprise> entreprises =  (List<Entreprise>) entrepriseRepoistory.findAll();  
@@ -76,7 +76,7 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 		l.info("Out of retrieveAllEntreprises."); 
 		return entreprises;
 	}
-	
+
 	public List<String> getAllDepartementsNamesByEntreprise(int entrepriseId) {
 		l.info("In  getAllDepartementByEntreprise : entrepriseId" + entrepriseId); 
 
@@ -108,16 +108,17 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 	}
 
 	@Transactional
+	//delete byId
 	public void deleteDepartementById(int depId) {
 		l.info("in  deleteDepartement id = " + depId);
 
 		Departement d=deptRepoistory.findById(depId).get();
 		deptRepoistory.delete(d);
-		
+
 		l.info("departement deleted." +d.getName() );
 		l.info("out of  deleteDepartement");
 	}
-//cv
+	//cv
 	public Entreprise getEntrepriseById(int entrepriseId) {
 		l.info("in  getEntreprise id = " + entrepriseId);
 
